@@ -270,6 +270,20 @@ class PlayerControllerRandom(PlayerController):
         print("Random Agent returning")
         return
 
+    def getAllowed(self, state) -> dict:
+        allowed = {"stay": 4}
+        row, col = self.ind2state[state]
+        if col > 0:
+            allowed["left"] = 0
+        if col < self.space_subdivisions:
+            allowed["right"] = 1
+        if row < self.space_subdivisions:
+            allowed["down"] = 2
+        if row > 0:
+            allowed["up"] = 3
+        return allowed
+        
+        
     def random_agent(self):
         ns = len(self.state2ind.keys())
         na = len(self.actions.keys())
@@ -282,6 +296,7 @@ class PlayerControllerRandom(PlayerController):
         end_episode = False
         # ADD YOUR CODE SNIPPET BETWEEN EX. 1.2
         # Initialize a numpy array with ns state rows and na state columns with zeros
+        n = np.zeros((ns, na))
         # ADD YOUR CODE SNIPPET BETWEEN EX. 1.2
 
         while episode <= self.episode_max:
@@ -294,7 +309,7 @@ class PlayerControllerRandom(PlayerController):
 
                 # ADD YOUR CODE SNIPPET BETWEEN EX. 1.2
                 # Chose an action from all possible actions and add to the counter of actions per state
-                action = None
+                action = np.random.choice(list(possible_actions.keys()))
                 # ADD YOUR CODE SNIPPET BETWEEN EX. 1.2
 
                 action_str = self.action_list[action]
