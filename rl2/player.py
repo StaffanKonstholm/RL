@@ -157,7 +157,7 @@ class PlayerControllerRL(PlayerController, FishesModelling):
         self.allowed_movements()
         # ADD YOUR CODE SNIPPET BETWEEN EX. 2.1
         # Initialize a numpy array with ns state rows and na state columns with float values from 0.0 to 1.0.
-        Q = np.ones((ns, na))
+        Q = np.zeros((ns, na))
         # ADD YOUR CODE SNIPPET BETWEEN EX. 2.1
 
         for s in range(ns):
@@ -195,9 +195,9 @@ class PlayerControllerRL(PlayerController, FishesModelling):
 
                 # ADD YOUR CODE SNIPPET BETWEEN EX 2.1 and 2.2
                 # Chose an action from all possible actions
-                action = list_pos[
-                    np.argmax(  Q[s_current,a] for a in list_pos    )
-                    ]
+                
+                action = np.nanargmax(Q[s_current,:])
+                
                  #action = np.random.choice(list_pos)
                 # ADD YOUR CODE SNIPPET BETWEEN EX 2.1 and 2.2
 
@@ -221,7 +221,7 @@ class PlayerControllerRL(PlayerController, FishesModelling):
                 # ADD YOUR CODE SNIPPET BETWEEN EX. 2.2
                 # Implement the Bellman Update equation to update Q
                 s, a, alpha, gamma = s_current, action, self.alpha, self.gamma
-                Q[s, a] = (1-alpha) * Q[s, a] + alpha * (R + gamma * max( Q[s_next, a_next] for a_next in range(4) ))
+                Q[s, a] = (1-alpha) * Q[s, a] + alpha * (R + gamma * np.nanmax(Q[s_next, :]))
                 # ADD YOUR CODE SNIPPET BETWEEN EX. 2.2
 
                 s_current = s_next
@@ -230,7 +230,7 @@ class PlayerControllerRL(PlayerController, FishesModelling):
 
             # ADD YOUR CODE SNIPPET BETWEEN EX. 2.3
             # Compute the absolute value of the mean between the Q and Q-old
-            convergence_measure = abs(np.mean(Q - Q_old))
+            convergence_measure = np.nanmean(abs(Q - Q_old))
             # ADD YOUR CODE SNIPPET BETWEEN EX. 2.3
             Q_old[:] = Q
             print(
