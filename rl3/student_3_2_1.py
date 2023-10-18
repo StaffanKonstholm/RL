@@ -4,7 +4,7 @@ rewards = [10, -10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10] # backup
 rewards = [-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, 0]
 
 # Q learning learning rate
-alpha = 0.1
+alpha = 0.01
 
 # Q learning discount rate
 gamma = 0.1
